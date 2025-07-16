@@ -2,6 +2,20 @@
 $servername = "localhost";
 $username = "root"; // Default for XAMPP
 $password = "";     // Default is empty
+
+
+$conn = new mysqli($servername, $username, $password);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$sqldb = "CREATE DATABASE IF NOT EXISTS `tb`;";
+mysqli_query($conn, $sqldb);
+
+
+    // Default is empty
 $database = "tb";
 
 $conn = new mysqli($servername, $username, $password, $database);

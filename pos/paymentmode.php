@@ -1,6 +1,8 @@
 <?php
 session_start();
 include 'process/functions.php';
+include 'components/_header.php';
+include 'components/_sidebar.php';
 
 
 
@@ -29,7 +31,7 @@ $remainingAmount = $payableAmount - $collectedAmount;
 
 <!-- Store Header -->
 
-<form action="process/actions.php" method="POST">
+<form action="process/actions.php" method="POST" class="">
     <div class=" w-100 p-4 store-header">
         <h1><b>Payment</b></h1>
     </div>
@@ -67,19 +69,19 @@ $remainingAmount = $payableAmount - $collectedAmount;
                 <input type="radio" class="btn-check" name="paymentMode" id="cash" value="cash" autocomplete="off" checked>
                 <label class="btn btn-indigo" for="cash">Cash</label>
 
-                <input type="radio" class="btn-check" name="paymentMode" id="card" value="card" autocomplete="off">
+                <input type="radio" class="btn-check" name="paymentMode" id="card" value="CARD" autocomplete="off">
                 <label class="btn btn-indigo" for="card">Card</label>
 
-                <input type="radio" class="btn-check" name="paymentMode" id="upi" value="upi" autocomplete="off">
+                <input type="radio" class="btn-check" name="paymentMode" id="upi" value="UPI" autocomplete="off">
                 <label class="btn btn-indigo" for="upi">UPI</label>
 
-                <input type="radio" class="btn-check" name="paymentMode" id="credit" value="credit" autocomplete="off">
+                <input type="radio" class="btn-check" name="paymentMode" id="credit" value="CREDIT" autocomplete="off">
                 <label class="btn btn-indigo" for="credit">Credit Note</label>
 
-                <input type="radio" class="btn-check" name="paymentMode" id="voucher" value="voucher" autocomplete="off">
+                <input type="radio" class="btn-check" name="paymentMode" id="voucher" value="VOUCHER" autocomplete="off">
                 <label class="btn btn-indigo" for="voucher">Gift Voucher</label>
 
-                <input type="radio" class="btn-check" name="paymentMode" id="loyalty" value="loyalty" autocomplete="off">
+                <input type="radio" class="btn-check" name="paymentMode" id="loyalty" value="LOYALTY" autocomplete="off">
                 <label class="btn btn-indigo" for="loyalty">Loyalty Points</label>
             </div>
         </div>
@@ -97,7 +99,7 @@ $remainingAmount = $payableAmount - $collectedAmount;
 
         echo '
         </form>
-        <div class="d-flex justify-content-center align-items-center gap-2 mt-4">
+        <div class="d-flex justify-content-center align-items-center gap-2 my-4">
        <button  class="btn btn-success payment-btn text-light" data-bs-toggle="modal" data-bs-target="#invoiceModal">
   Print
 </button>
@@ -106,9 +108,9 @@ $remainingAmount = $payableAmount - $collectedAmount;
         ';
     } else {
         echo '
-          <div class="d-flex justify-content-center align-items-center gap-2 mt-4">
+          <div class="d-flex justify-content-center align-items-center gap-2 my-4">
           <button type="submit" class="btn btn-success payment-btn text-light">Accept Payment</button>
-        <a href="sales.php" class="btn btn-light payment-btn text-dark">Back to Sale</a>
+        <button class=" border" style="background-color:white;"><a href="sales.php" class="text-dark">Back to Sale</a></button>
         </div>
         </form>
         ';
@@ -148,19 +150,17 @@ $remainingAmount = $payableAmount - $collectedAmount;
             </table>
         </div>
     </div>
-    <?php
 
-
-    ?>
 
     <?php
-
-
-
 
 
 
     include 'invoice_modal.php';
+echo '<pre>';
+echo print_r($_SESSION);
+
+
 
 
     include 'components/_footer.php';

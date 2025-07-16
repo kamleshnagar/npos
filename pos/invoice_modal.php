@@ -22,6 +22,7 @@
                             color: #000;
                             margin: 0px;
                             padding: 0px;
+                            width: 100%;
                         }
 
                         /* .invoice-box {
@@ -51,6 +52,7 @@
                             border-bottom: 3px solid #4747479d;
                             background-color: white;
                             color: black;
+                            font-weight: 700;
                         }
 
                         .table td {
@@ -99,8 +101,9 @@
                     </style>
 
                     <?php
-
                     include 'process/db.php';
+                    // session_start();
+
                     $result = mysqli_query($conn, "SELECT id FROM invoices ORDER BY id DESC LIMIT 1");
                     $row = mysqli_fetch_assoc($result);
                     $lastInvoiceID = $row['id'] ?? 0;
@@ -116,12 +119,15 @@
                     $customerMobile = htmlspecialchars($invoiceData['customerMobile'] ?? '-');
                     $salesman = htmlspecialchars($invoiceData['salesman'] ?? '-');
                     $totalQty = number_format($invoiceData['totalQty'] ?? 0);
-                    $totalSelling = number_format($invoiceData['totalSelling'] ?? 0, 2);
-                    $finalDiscount = number_format($invoiceData['finalDiscount'] ?? 0, 2);
-                    $netAmount = number_format($invoiceData['netAmount'] ?? 0, 2);
-                    $payableAmount = number_format($invoiceData['payableAmount'] ?? 0, 2);
+                    $totalSelling = $invoiceData['totalSelling'] ?? 0;
+                    $finalDiscount = $invoiceData['finalDiscount'] ?? 0;
+                    $netAmount = $invoiceData['netAmount'] ?? 0;
+                    $payableAmount = $invoiceData['payableAmount'] ?? 0;
                     $invoiceNo = htmlspecialchars($invoiceData['invoiceNo'] ?? $invoiceNo);
                     $date = date('M d Y H:i:s');
+                    $offerApplied = $invoiceData['offerApplied'];
+
+
 
 
                     ?>
@@ -172,7 +178,7 @@
                             <svg id="invoiceBarcode"></svg>
                         </div>
                         <div class="dashed"></div>
-                        <table class="table">
+                        <table class="table ">
                             <thead class="">
                                 <tr>
                                     <th>SNO</th>
@@ -186,20 +192,27 @@
                                     <th>Total</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="text-center">
                                 <?php
                                 $sno = 1;
+                                echo print_r($invoiceNo);
                                 foreach ($products as $item) {
                                     $barcode = htmlspecialchars($item['barcode']);
                                     $name = htmlspecialchars($item['productName']);
+                                    $color = htmlspecialchars($item['color']);
+                                    $size = htmlspecialchars($item['size']);
                                     $sku = htmlspecialchars($item['sku']);
                                     $qty = (int)$item['qty'];
-                                    $price =  number_format(((float)$item['price']), 2);
-                                    $discount =  number_format(((float)$item['discount']), 2);
+                                    $price =  (float)$item['price'];
+                                    $discount =  (float)$item['discount'];
                                     $value = (float)$item['value'];
+                                    echo '<pre>';
+                                    echo print_r($value);
+                                    echo '</pre>';
                                     $gst = (float)$item['gst'];
                                     $tax =  $value * ($gst / 100);
                                     $taxable = $value - $tax;
+
                                     $total = $value * $qty;
                                     $totalTax =  number_format(($tax * $qty), 2);
                                     $cat = substr($name, 0, 2);
@@ -210,23 +223,34 @@
                                     } else if ($cat === "TS") {
                                         $hsn = 61091000;
                                     }
+
+                                    if (!isset($_SESSION['InsertSelesData']) || $_SESSION['InsertSelesData'] !== true) {
+
+
+
+                                        $InsertSelesData = "INSERT INTO `sales` (`customer_name`, `customer_mo`, `invoice_no`, `date`, `barcode`, `article_no`, `color`, `size`, `qty`, `mrp`, `discount`, `taxable`, `tax`, `value`) VALUES
+                                         ('$customername', '$customerMobile', '$invoiceNo', current_timestamp(), '$barcode', '$name', '$color', '$size','$qty', '$price', '$discount', '$taxable', '$tax', '$total')";
+                                        $result = mysqli_query($conn, $InsertSelesData);
+                                    }
+
                                     echo
                                     "<tr>
-                    <td>{$sno}</td>
-                    <td>{$name}<br>{$sku}</td>
-                    <td>{$price}</td>
-                    <td>{$qty}</td>
-                    <td>{$discount}</td>
-                    <td>{$hsn}</td>
-                    <td>
-                        <div>{$taxable}</div>
-                        <div>Tax:$tax</div>
-                    </td>
+                                        <td class='text-center'>{$sno}</td>
+                                        <td >{$name}<br>{$sku}</td>
+                                        <td  class='text-center'>{$price}</td>
+                                        <td class='text-center'>{$qty}</td>
+                                        <td  class='text-center'>{$discount}</td>
+                                        <td  class='text-center'>{$hsn}</td>
+                                        <td>
+                                            <div  class='text-center'>{$taxable}</div>
+                                            <div  class='text-center'>Tax:$tax</div>
+                                        </td>
 
-                    <td>$total</td>
-                </tr>";
+                                        <td  class='text-center'>$total</td>
+                                    </tr>";
                                     $sno++;
                                 }
+                                $_SESSION['InsertSelesData'] = true;
 
                                 ?>
 
@@ -247,6 +271,18 @@
                             }
                         }
                         $totalTax = $gst12Total + $gst5Total;
+                        $totalTaxable = $payableAmount - $totalTax;
+
+                        if (!isset($_SESSION['InsertInvoiceData']) || $_SESSION['InsertInvoiceData'] !== true) {
+
+                            $InsertInvoiceData = "INSERT INTO `invoices` ( `invoice_no`, `date`, `customer_name`, `customer_mo`, `salesman`, `qty`, `total_mrp`, `total_discount`, `payable_amount`, `selected_offer`) VALUES ('$invoiceNo',  current_timestamp(), '$customername', '$customerMobile', '$salesman', '$totalQty', '$totalSelling', '$finalDiscount', '$payableAmount', '$offerApplied')";
+                            $result = mysqli_query($conn, $InsertInvoiceData);
+                            $invoiceId = mysqli_insert_id($conn);
+
+                            $_SESSION['InsertInvoiceData'] = true;
+                        }
+
+
                         ?>
 
 
@@ -254,15 +290,15 @@
                             <div class="col-12">
                                 <div class="d-flex justify-content-between">
                                     <div><strong>Total Quantity:</strong></div>
-                                    <div><strong><?= $totalQty ?></strong></div>
+                                    <div><strong><?= number_format($totalQty, 2) ?></strong></div>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <div><strong>Total Discount:</strong></div>
-                                    <div><strong>₹<?= $finalDiscount ?></strong></div>
+                                    <div><strong>₹<?= number_format($finalDiscount, 2) ?></strong></div>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <div><strong>Total Taxable Amount:</strong></div>
-                                    <div><strong>₹<?= $netAmount ?></strong></div>
+                                    <div><strong>₹<?= number_format($totalTaxable, 2) ?></strong></div>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <div><strong>Total Tax:</strong></div>
@@ -270,7 +306,7 @@
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <div><strong>Total Payable:</strong></div>
-                                    <div><strong> ₹<?= $payableAmount ?></strong></div>
+                                    <div><strong> ₹<?= number_format($payableAmount, 2) ?></strong></div>
                                 </div>
                                 <div class="dashed"></div>
                             </div>
@@ -386,12 +422,12 @@
                         }
                     </script>
                     <button class="btn btn-primary" style="width:150px;" onclick="printInvoice()">Print</button>
-                    <button class="btn btn-secondary" style="width:150px;"><a href="sales.php"></a>Back to Sale</button>
+                    <button class=" btn btn-secondary" style="width:150px;"><a href="sales.php" class="text-decoration-none btn btn-secondary" style="width:150px;">Exit</a></button>
                 </div>
             </div>
         </div>
     </div>
 
     <?php
-  
+
     ?>

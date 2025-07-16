@@ -286,6 +286,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return {
                 barcode: item.barcode,
                 productName: item.name,
+                color: item.color,
+                size: item.size,
                 sku: (item.name || '-') + '-' + (item.color || '-') + '-' + (item.size || '-'),
                 qty: item.qty,
                 price: item.price,

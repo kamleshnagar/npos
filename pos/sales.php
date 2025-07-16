@@ -1,6 +1,8 @@
 <?php
 
 session_start();
+session_destroy();
+session_start();
 include 'process/functions.php';
 include 'components/_sidebar.php';
 include 'components/_header.php';
