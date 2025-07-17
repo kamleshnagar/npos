@@ -14,7 +14,4 @@
             <!-- Add your dashboard content here -->
         </div>
     </main>
-
-    <script src="js/menu.js"></script>
-</body>
-</html> 
+<?php include 'components/_footer.php'; ?>

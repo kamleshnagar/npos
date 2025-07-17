@@ -296,7 +296,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 value: parseFloat(value.toFixed(2))
             };
         });
-
+        
         const invoiceDetails = {
             customerName: document.getElementById("customerName").value,
             customerMobile: document.getElementById("customerMobile").value,
@@ -313,10 +313,11 @@ document.addEventListener("DOMContentLoaded", function () {
             couponCode: document.getElementById("coupnecode").value,
             products: products
         };
-
+        
         document.getElementById("invoiceData").value = JSON.stringify(invoiceDetails);
         console.log("Submitting invoice:", invoiceDetails);
-
+        
         this.submit();
     });
+    console.log(products);
 });

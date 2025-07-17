@@ -1,14 +1,38 @@
 <?php
+include 'components/_header.php';
 
 session_start();
 session_destroy();
 session_start();
+
 include 'process/functions.php';
-include 'components/_sidebar.php';
-include 'components/_header.php';
+
 ?>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const inputs = ["customerMobile", "customerName", "salesman"];
+
+        inputs.forEach((id, index) => {
+            const input = document.getElementById(id);
+            if (input) {
+                input.addEventListener("keydown", function(e) {
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        const nextInput = document.getElementById(inputs[index + 1]);
+                        if (nextInput) {
+                            nextInput.focus();
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
 
 
+<?php
+include 'components/_sidebar.php';
+?>
 <!-- Main Content -->
 
 <form id="paymentForm" method="POST" action="/pos/process/actions.php">
@@ -19,7 +43,7 @@ include 'components/_header.php';
     <div class="input-section m-2">
         <div class="input-row">
             <div class="input-group d-flex flex-nowrap">
-                <input id="customerMobile" name="customerMobile" type="text" class="form-input" placeholder="Cust Mob No" required>
+                <input id="customerMobile" name="customerMobile" type="number" class="form-input" placeholder="Cust Mob No" required>
                 <button class="search-button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -28,9 +52,13 @@ include 'components/_header.php';
                     </svg>
                 </button>
             </div>
+            <p id="mobieError" class="form-error text-danger" style="display: none;">Enter a valid 10-digit number</p>
+
             <div class="input-group d-flex flex-nowrap" required>
                 <input id="customerName" name="customerName" type="text" class="form-input" placeholder="Cust Name" required>
             </div>
+
+
         </div>
         <div class="input-row">
             <div class="input-group selection-box" required>
@@ -175,16 +203,60 @@ include 'components/_header.php';
             </div>
         </div>
     </div>
-    
 
 
- 
+
+
 
 </form>
 <script
-  src="https://code.jquery.com/jquery-3.7.1.min.js"
-  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-  crossorigin="anonymous"></script>
+    src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+    crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function () {
+        const errorMsg = $('#mobieError');
+
+        $('#customerMobile').on("keyup", function () {
+            const mobile = $(this).val().trim();
+
+            if (mobile.length !== 10 || isNaN(mobile)) {
+                errorMsg.show().text('Enter a valid 10-digit number');
+                $('#customerName').val('');
+            } else {
+                errorMsg.hide();
+            }
+        });
+
+        $('#customerMobile').on('keydown', function (e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                e.preventDefault();
+
+                const mobile = $(this).val().trim();
+
+                if (mobile.length === 10 && !isNaN(mobile)) {
+                    // AJAX request to get customer name
+                    $.ajax({
+                        url: 'process/get_customer.php',
+                        method: 'POST',
+                        data: { mobile: mobile },
+                        success: function (response) {
+                            $('#customerName').val(response.trim()).focus();
+                        },
+                        error: function () {
+                            console.error('Error fetching customer');
+                            $('#customerName').val('');
+                        }
+                    });
+                }
+            }
+        });
+    });
+</script>
+
+
+
 
 <!-- External JS -->
 <?php include 'components/_footer.php'; ?>

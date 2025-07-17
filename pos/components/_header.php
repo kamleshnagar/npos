@@ -4,19 +4,21 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sales - N-POS</title>
+    <title> Sale Orders - N-POS</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous" />
 
     <!-- Custom Styles -->
-    
+
 
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <!-- Bootstrap JS (required for modal to work) -->
+
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-8vN8z6iQjD2qTzb5+KqL6UosxYjvZjcEe+vXU5SOyCI="
         crossorigin="anonymous"></script>
@@ -28,10 +30,32 @@
     <link rel="stylesheet" href="styles/menu.css" />
     <link rel="stylesheet" href="styles/sales.css" />
     <link rel="stylesheet" href="styles/payment.css" />
+    <link rel="stylesheet" href="styles/invoice_modal.css" />
+    <style>
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+    </style>
 
 </head>
 
 <body>
+    <!-- Preloader Start -->
+    <div id="preloader">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <!-- Preloader End -->
 
     <!-- Main Content -->
     <main class="main-content">
@@ -61,3 +85,5 @@
                 </div>
             </div>
         </div>
+        <?php
+        date_default_timezone_set('Asia/Kolkata'); ?>

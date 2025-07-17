@@ -1,0 +1,122 @@
+.invoice-modal {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: #000;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+
+
+.dashed {
+    border-top: 3px dashed #4747479d;
+    margin: 10px 0;
+}
+
+.invoice-title {
+    font-weight: bold;
+}
+
+.barcode {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.table th {
+    border-bottom: 3px solid #4747479d;
+    background-color: white;
+    color: black;
+    font-weight: 700;
+}
+
+.table-invoice {
+    width: 100%;
+}
+
+.table-invoice td {
+    vertical-align: middle !important;
+
+    border-bottom: 1px solid #4747474b;
+}
+
+.table-invoice th {
+    border-bottom: 3px solid #4747474b;
+}
+
+.table-invoice th,
+.table-invoice td {
+    padding: 6px;
+}
+
+.summary-list li {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+}
+
+
+.tax-table {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.tax-table td,
+.tax-table th {
+    padding: 6px;
+    border-bottom: 3px dashed #4747479d;
+
+}
+
+.footer-note {
+
+
+    text-align: center;
+}
+
+.strong {
+    font-weight: bold;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-end {
+    text-align: end;
+}
+
+.n-pos {
+    position: absolute;
+    right: 220px;
+}
+
+.print-footer {
+    display: none;
+}
+
+@media print {
+    @page {
+        margin-bottom: 0;
+    }
+
+    body {
+        margin-bottom: 60px;
+        /* Make space for footer */
+    }
+
+    /* .print-footer {
+                                position: fixed;
+                                bottom: 0;
+                                width: 100%;
+                                text-align: center;
+                                font-size: 12px;
+                                color: #000;
+                            }
+
+                            .print-footer {
+                                display: block;
+                            } */
+
+}

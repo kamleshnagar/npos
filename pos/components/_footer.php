@@ -12,8 +12,15 @@
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 
 <!-- Your Custom Scripts -->
-<script src="js/barcode.js"></script>
 <script src="js/menu.js"></script>
-
+<script src="js/barcode.js"></script>
+<script>
+    window.addEventListener('load', function () {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            preloader.style.display = 'none';
+        }
+    });
+</script>
 </body>
 </html>
