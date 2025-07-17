@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 17, 2025 at 12:56 AM
+-- Generation Time: Jul 17, 2025 at 03:25 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -17,9 +17,26 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
+CREATE DATABASE IF NOT EXISTS `tb`
 -- Database: `tb`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customers`
+--
+
+CREATE TABLE IF NOT EXISTS `customers` (
+  `id` int(11) NOT NULL,
+  `customer_name` varchar(255) NOT NULL,
+  `customer_mo` bigint(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customers`
+--
+
 
 -- --------------------------------------------------------
 
@@ -27,7 +44,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `invoices`
 --
 
-CREATE TABLE `invoices` (
+CREATE TABLE IF NOT EXISTS `invoices` (
   `id` int(11) NOT NULL,
   `invoice_no` varchar(50) NOT NULL,
   `date` datetime NOT NULL DEFAULT current_timestamp(),
@@ -45,9 +62,7 @@ CREATE TABLE `invoices` (
 -- Dumping data for table `invoices`
 --
 
-INSERT INTO `invoices` (`id`, `invoice_no`, `date`, `customer_name`, `customer_mo`, `salesman`, `qty`, `total_mrp`, `total_discount`, `payable_amount`, `selected_offer`) VALUES
-(1, 'S888/2526/001', '2025-07-17 04:20:18', 'KAMLESH NAGAR', '7990929061', 'KAMLESH NAGAR', 5, 11295.00, 5697.00, 5598.00, 'B1T2|B2T5|B4T10'),
-(2, 'S888/2526/002', '2025-07-17 04:21:59', 'HARSH', '1240100553', 'HARESH VISHWAKARMA', 2, 5598.00, 2799.00, 2799.00, 'B1T2|B2T5|B4T10');
+
 
 -- --------------------------------------------------------
 
@@ -55,9 +70,9 @@ INSERT INTO `invoices` (`id`, `invoice_no`, `date`, `customer_name`, `customer_m
 -- Table structure for table `masterlist`
 --
 
-CREATE TABLE `masterlist` (
+CREATE TABLE IF NOT EXISTS `masterlist` (
   `id` int(11) NOT NULL,
-  `barcode` varchar(50) DEFAULT NULL,
+  `barcode` varchar(50) NOT NULL,
   `style_no` varchar(50) DEFAULT NULL,
   `color` varchar(50) DEFAULT NULL,
   `size` varchar(20) DEFAULT NULL,
@@ -2625,7 +2640,7 @@ INSERT INTO `masterlist` (`id`, `barcode`, `style_no`, `color`, `size`, `mrp`, `
 -- Table structure for table `sales`
 --
 
-CREATE TABLE `sales` (
+CREATE TABLE IF NOT EXISTS `sales` (
   `id` int(11) NOT NULL,
   `customer_name` varchar(50) NOT NULL,
   `customer_mo` varchar(25) NOT NULL,
@@ -2648,17 +2663,25 @@ CREATE TABLE `sales` (
 --
 
 INSERT INTO `sales` (`id`, `customer_name`, `customer_mo`, `invoice_no`, `date`, `barcode`, `article_no`, `color`, `size`, `qty`, `mrp`, `discount`, `taxable`, `tax`, `value`) VALUES
-(1, 'KAMLESH NAGAR', '7990929061', 'S888/2526/001', '2025-07-17 04:20:18', '1240100553', 'JN10048CR', 'L. BLUE', '28', 1, 2799, 1411.77, 1220.76, 166.47, 1387.23),
-(2, 'KAMLESH NAGAR', '7990929061', 'S888/2526/001', '2025-07-17 04:20:18', '1240100554', 'JN10048CR', 'L.BLUE', '30', 1, 2799, 1411.77, 1220.76, 166.47, 1387.23),
-(3, 'KAMLESH NAGAR', '7990929061', 'S888/2526/001', '2025-07-17 04:20:18', '6240500036', 'FK6005', 'INDIGO', 'XXL', 1, 1899, 957.82, 894.12, 47.06, 941.18),
-(4, 'KAMLESH NAGAR', '7990929061', 'S888/2526/001', '2025-07-17 04:20:18', '6240500045', 'FK6006', 'RUST', 'M', 1, 1899, 957.82, 894.12, 47.06, 941.18),
-(5, 'KAMLESH NAGAR', '7990929061', 'S888/2526/001', '2025-07-17 04:20:18', '6240500046', 'FK6006', 'RUST', 'L', 1, 1899, 957.82, 894.12, 47.06, 941.18),
-(6, 'HARSH', '1240100553', 'S888/2526/002', '2025-07-17 04:21:59', '1240100553', 'JN10048CR', 'L. BLUE', '28', 1, 2799, 1399.50, 1231.56, 167.94, 1399.50),
-(7, 'HARSH', '1240100553', 'S888/2526/002', '2025-07-17 04:21:59', '1240100554', 'JN10048CR', 'L.BLUE', '30', 1, 2799, 1399.50, 1231.56, 167.94, 1399.50);
+(1, 'HARSH VISHWAKARMA', '8128379844', 'S888/2526/001', '2025-07-17 17:18:09', '2250302022', 'SH30317', 'MID BLUE', 'M', 1, 1799, 719.60, 949.87, 129.53, 1079.40),
+(2, 'KAMLESH NAGAR', '7990929061', 'S888/2526/481', '2025-07-17 17:20:04', '2250302022', 'SH30317', 'MID BLUE', 'M', 2, 1799, 1799.00, 1583.12, 215.88, 3598.00),
+(3, 'HARSH VISHWAKARMA', '8128376844', 'S888/2526/482', '2025-07-17 17:25:18', '2250302022', 'SH30317', 'MID BLUE', 'M', 1, 1799, 719.60, 949.87, 129.53, 1079.40),
+(4, 'KAMLESH NAGAR', '7990929061', 'S888/2526/483', '2025-07-17 17:36:10', '2250302022', 'SH30317', 'MID BLUE', 'M', 1, 1799, 719.60, 949.87, 129.53, 1079.40),
+(5, 'RANDOM', '9586582352', 'S888/2526/484', '2025-07-17 17:41:29', '2250302022', 'SH30317', 'MID BLUE', 'M', 1, 1799, 719.60, 949.87, 129.53, 1079.40),
+(6, 'RANODOM', '9586582352', 'S888/2526/485', '2025-07-17 17:47:11', '2250302022', 'SH30317', 'MID BLUE', 'M', 2, 1799, 1799.00, 1583.12, 215.88, 3598.00),
+(7, 'KAMLESH NAGAR', '7990929061', 'S888/2526/486', '2025-07-17 17:49:13', '2250302022', 'SH30317', 'MID BLUE', 'M', 1, 1799, 719.60, 949.87, 129.53, 1079.40);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `customers`
+--
+ALTER TABLE `customers`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `customer_mo` (`customer_mo`),
+  ADD UNIQUE KEY `customer_mo_2` (`customer_mo`);
 
 --
 -- Indexes for table `invoices`
@@ -2670,7 +2693,10 @@ ALTER TABLE `invoices`
 -- Indexes for table `masterlist`
 --
 ALTER TABLE `masterlist`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `barcode` (`barcode`),
+  ADD UNIQUE KEY `barcode_2` (`barcode`),
+  ADD UNIQUE KEY `barcode_3` (`barcode`);
 
 --
 -- Indexes for table `sales`
@@ -2683,10 +2709,16 @@ ALTER TABLE `sales`
 --
 
 --
+-- AUTO_INCREMENT for table `customers`
+--
+ALTER TABLE `customers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
 -- AUTO_INCREMENT for table `invoices`
 --
 ALTER TABLE `invoices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=487;
 
 --
 -- AUTO_INCREMENT for table `sales`
